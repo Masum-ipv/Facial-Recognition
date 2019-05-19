@@ -168,8 +168,7 @@ def who_is_it(image, database, model):
             min_dist = dist
             identity = name
     
-    #if min_dist > 0.52:
-    if min_dist > 0.65:
+    if min_dist > 0.52:
         return None
     else:
         return str(identity)
@@ -187,8 +186,11 @@ def welcome_users(identities):
         welcome_message += 'and %s, ' % identities[-1]
         welcome_message += 'have a nice day!'
 
+    print(welcome_message)
+    
     # Allow the program to start detecting identities again
     ready_to_detect_identity = True
+    
 
 if __name__ == "__main__":
     database = prepare_database()
