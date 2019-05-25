@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 
 
-n_classes=5
+n_classes=2
 
 e=emb()
 arc=DenseArchs(n_classes)
