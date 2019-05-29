@@ -13,18 +13,14 @@ abhi=None
 #data=database()
 e=emb()
 fd=face()
-
-print('attendance till now is ')
 #data.view()
 
 #model=load_model('inception.MODEL')
 model=load_model('face_reco2.MODEL')
 
-
 def test():
     test_run=cv2.imread('test/masum.jpg',1)
     #test_run=cv2.imread('test/obama.png',1)
-    #test_run=cv2.imread('test/tramp.png',1)
     test_run=cv2.resize(test_run,(160,160))
     #test_run=np.rollaxis(test_run,2,0)
     test_run=test_run.astype('float')/255.0

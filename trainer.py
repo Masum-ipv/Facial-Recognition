@@ -6,6 +6,7 @@ from embedding import emb
 from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
+import tensorflow as tf
 
 
 n_classes=2
@@ -47,3 +48,13 @@ face_model.compile(optimizer=o,loss='categorical_crossentropy')
 face_model.fit(x_train,y_train,batch_size=batch_size,epochs=epochs,shuffle='true',validation_data=(x_test,y_test))
 face_model.save('face_reco2.MODEL')
 print(x_data.shape,y_data.shape)
+
+
+#### convert tflite model
+
+converter = tf.contrib.lite.TFLiteConverter.from_keras_model_file("face_reco2.MODEL")
+tflite_model = converter.convert()
+open("converted_model.tflite", "wb").write(tflite_model)
+
+
+
