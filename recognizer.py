@@ -1,39 +1,38 @@
-import cv2
+import cv2, os
 from face_detection import face
 from keras.models import load_model
 import numpy as np
 from embedding import emb
-#from retreive_pymongo_data import database
+import numpy as np
 
-
-label=None
-a={0:0,1:0}
-people={0:"Masum",1:"Obama"}
-abhi=None
-#data=database()
 e=emb()
 fd=face()
-#data.view()
-
-#model=load_model('inception.MODEL')
 model=load_model('face_reco2.MODEL')
 
 def test():
-    test_run=cv2.imread('test/masum.jpg',1)
-    #test_run=cv2.imread('test/obama.png',1)
+    # test_run=cv2.imread('test/masum.jpg',1)
+    test_run=cv2.imread('test/obama.png',1)
     test_run=cv2.resize(test_run,(160,160))
-    #test_run=np.rollaxis(test_run,2,0)
     test_run=test_run.astype('float')/255.0
     test_run=np.expand_dims(test_run,axis=0)
     test_run=e.calculate(test_run)
     test_run=np.expand_dims(test_run,axis=0)
     test_run=model.predict(test_run)[0]
-    print(test_run)
+    max_ind = np.argmax(test_run)
+    people=os.listdir('people')
+    print("Predicted Person :", people[max_ind], "  Result :", np.max(test_run)*100,"%")
 
 
 cap=cv2.VideoCapture(0)
 ret=True
 test()
+
+
+##################### Run from webcam #########################
+# label=None
+# a={0:0,1:0}
+# people={0:"Masum",1:"Obama"}
+# abhi=None
 # while ret:
 #     ret,frame=cap.read()
 #     frame=cv2.flip(frame,1)

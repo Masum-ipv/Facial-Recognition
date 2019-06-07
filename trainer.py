@@ -7,9 +7,12 @@ from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 import tensorflow as tf
+import glob  
 
 
-n_classes=2
+folder = glob.glob("people/*")
+n_classes=len(folder)
+
 
 e=emb()
 arc=DenseArchs(n_classes)
@@ -24,6 +27,7 @@ batch_size=32
 
 people=os.listdir('people')
 
+count = 0
 for x in people:
     for i in os.listdir('people/'+x):
         img=cv2.imread('people'+'/'+x+'/'+i,1)
@@ -33,8 +37,8 @@ for x in people:
         img=np.expand_dims(img,axis=0)
         embs=e.calculate(img)
         x_data.append(embs)
-        y_data.append(int(x[-1]))
-
+        y_data.append(count)
+    count+=1
 
 x_data=np.array(x_data,dtype='float')
 y_data=np.array(y_data)
@@ -47,14 +51,7 @@ o=Adam(lr=learning_rate,decay=learning_rate/epochs)
 face_model.compile(optimizer=o,loss='categorical_crossentropy')
 face_model.fit(x_train,y_train,batch_size=batch_size,epochs=epochs,shuffle='true',validation_data=(x_test,y_test))
 face_model.save('face_reco2.MODEL')
-print(x_data.shape,y_data.shape)
-
-
-#### convert tflite model
-
-converter = tf.contrib.lite.TFLiteConverter.from_keras_model_file("face_reco2.MODEL")
-tflite_model = converter.convert()
-open("converted_model.tflite", "wb").write(tflite_model)
+print("x_data.shape y_data.shape : ", x_data.shape,y_data.shape)
 
 
 
